@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/monthly"
+        android:id="@+id/fa"
         android:title="monthly"
         />
     <item
-        android:id="@+id/weekly"
+        android:id="@+id/fb"
         android:title="weekly"
         />
     <item
-        android:id="@+id/daily"
+        android:id="@+id/fc"
         android:title="daily"
         />
-    <item
+  <!--  <item
         android:id="@+id/schedule"
         android:title="schedule addition"
-        />
+        />-->
 </menu>
