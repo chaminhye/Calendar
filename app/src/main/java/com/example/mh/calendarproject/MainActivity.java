@@ -40,15 +40,6 @@ public class MainActivity extends AppCompatActivity {
                 actionBar.setHomeAsUpIndicator(drawable);
             }
         }
-      /*  //CalendarView 인스턴스 만들기
-        CalendarView calendar=(CalendarView)findViewById(R.id.calendar);
-        //리스너등록
-        calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                Toast.makeText(MainActivity.this, ""+year+"/"+(month+1)+"/"+dayOfMonth,0).show();
-            }
-        });*/
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
