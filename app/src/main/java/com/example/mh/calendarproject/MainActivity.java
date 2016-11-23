@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,6 +41,16 @@ public class MainActivity extends AppCompatActivity {
                 actionBar.setHomeAsUpIndicator(drawable);
             }
         }
+        CalendarView calendar=(CalendarView)findViewById(R.id.calendar);
+
+        calendar.setOnDateChangeListener((new CalendarView.OnDateChangeListener(){
+            public void onSelectedDayChange(CalendarView view, int year,int month, int dayOfMonth){
+                //Log.i("View.getDate", view.getDate() + "");
+                Calendar calendar =Calendar.getInstance();
+                calendar.set(year,month,dayOfMonth);
+                int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+            }
+        }));
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
