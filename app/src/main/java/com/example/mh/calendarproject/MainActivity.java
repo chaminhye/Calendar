@@ -1,6 +1,7 @@
 package com.example.mh.calendarproject;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     final Monthly FA = new Monthly();
     final Weekly FB = new Weekly();
     final Daily FC = new Daily();
+    //final ScheduleEdit_Activity FD= new ScheduleEdit_Activity();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.fc:
                 getSupportFragmentManager().beginTransaction().replace(R.id.main, FC).addToBackStack(null).commit();
+                return true;
+            case R.id.fd:
+                startActivity(new Intent(this, ScheduleEdit_Activity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
