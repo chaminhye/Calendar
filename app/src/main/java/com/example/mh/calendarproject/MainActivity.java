@@ -29,16 +29,6 @@ public class MainActivity extends AppCompatActivity {
                 actionBar.setHomeAsUpIndicator(drawable);
             }
         }
-/*        CalendarView calendar=(CalendarView)findViewById(R.id.calendar);
-
-        calendar.setOnDateChangeListener((new CalendarView.OnDateChangeListener(){
-            public void onSelectedDayChange(CalendarView view, int year,int month, int dayOfMonth){
-                //Log.i("View.getDate", view.getDate() + "");
-                //Calendar calendar =Calendar.getInstance();
-               // calendar.set(year,month,dayOfMonth);
-                //int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-            }
-        }));*/
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -52,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.fa:
                 getSupportFragmentManager().beginTransaction().replace(R.id.main, FA).addToBackStack(null).commit();
-                Log.i("dd","213");
                 return true;
             case R.id.fb:
                 getSupportFragmentManager().beginTransaction().replace(R.id.main, FB).addToBackStack(null).commit();
