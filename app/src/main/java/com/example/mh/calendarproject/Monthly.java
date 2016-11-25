@@ -14,6 +14,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -24,13 +25,13 @@ public class Monthly extends Fragment implements View.OnClickListener,AdapterVie
     ArrayAdapter<String> adapter;
     TextView textYear;
     TextView textMon;
-
+    private Calendar mCal;
     public Monthly(){}
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.month,container,false);
+        View view = inflater.inflate(R.layout.monthly,container,false);
 
         textYear = (TextView)view.findViewById(R.id.edit1);
         textMon = (TextView) view.findViewById(R.id.edit2);
@@ -75,7 +76,7 @@ public class Monthly extends Fragment implements View.OnClickListener,AdapterVie
         mItems.add("금");
         mItems.add("토");
 
-        Date current = new Date(year - 1900, mon - 1, 1);
+        Date current = new Date(year - 1900, mon - 1,1);
         int day = current.getDay(); // ���ϵ� int�� ����.
 
         for (int i = 0; i < day; i++) {
@@ -88,8 +89,15 @@ public class Monthly extends Fragment implements View.OnClickListener,AdapterVie
         for (int i = 1; i <= last; i++) {
             mItems.add(i + "");
         }
-        adapter.notifyDataSetChanged();
+/*        //해당날짜 텍스트 컬러,배경 변경
+        mCal= Calendar.getInstance();
+        //오늘 DAY가져옴
+        Integer today=mCal.get(Calendar.DAY_OF_MONTH);
+        String sToday=String.valueOf(today);
+        if(sToday.equals(getItem())){
 
+        }*/
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -104,8 +112,4 @@ public class Monthly extends Fragment implements View.OnClickListener,AdapterVie
             startActivity(intent);
         }
     }
-
-
-
-
 }
