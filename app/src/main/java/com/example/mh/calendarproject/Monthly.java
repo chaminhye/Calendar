@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +79,7 @@ public class Monthly extends Fragment implements View.OnClickListener,AdapterVie
 
         Date current = new Date(year - 1900, mon - 1,1);
         int day = current.getDay(); // ���ϵ� int�� ����.
+
 
         for (int i = 0; i < day; i++) {
             mItems.add("");

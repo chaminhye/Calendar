@@ -110,11 +110,10 @@ public class Weekly extends Fragment implements View.OnClickListener,AdapterView
     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
         // TODO Auto-generated method stub
         if (mItems.get(arg2).equals("")) {
-            ;
         } else {
             Intent intent = new Intent(getActivity(), Schedule_list.class);
-            intent.putExtra("Param1", textYear.getText().toString() + "/"
-                    + textMon.getText().toString() + "/" + mItems.get(arg2));
+            intent.putExtra("Param1", mItems.get(arg2));
+            Log.v("test3", intent.toString());
             startActivity(intent);
         }
     }

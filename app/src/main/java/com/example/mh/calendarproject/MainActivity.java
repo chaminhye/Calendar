@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     final Monthly FA = new Monthly();
     final Weekly FB = new Weekly();
     final Daily FC = new Daily();
-    //final ScheduleEdit_Activity FD= new ScheduleEdit_Activity();
+    final ScheduleEdit_Activity FD= new ScheduleEdit_Activity();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
