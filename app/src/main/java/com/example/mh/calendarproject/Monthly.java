@@ -96,7 +96,7 @@ public class Monthly extends Fragment implements View.OnClickListener,AdapterVie
         //오늘 DAY가져옴
         Integer today=mCal.get(Calendar.DAY_OF_MONTH);
         String sToday=String.valueOf(today);
-        if(sToday.equals(getItem())){
+        if(sToday.equals(today)){
 
         }*/
         adapter.notifyDataSetChanged();

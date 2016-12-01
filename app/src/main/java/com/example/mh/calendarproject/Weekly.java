@@ -1,6 +1,8 @@
 package com.example.mh.calendarproject;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,78 +14,38 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 /**
  * Created by Sea on 2016-10-12.
  */
-public class Weekly extends Fragment implements View.OnClickListener,AdapterView.OnItemClickListener{
+public class Weekly extends Fragment {
+    static MyAdapter adapter;
+    static MyAdapter adapter1;
+    static MyAdapter adapter2;
+    ArrayList<MyItem> data;
     ArrayList<String> mItems;
-    ArrayAdapter<String> adapter;
-    TextView textYear;
-    TextView textMon;
-    TextView textTest;
+    private int last;
+    private int last2;
+    private int day;
 
     public Weekly(){}
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.weekly,container,false);
-/*        //오늘 날짜
-        long now = System.currentTimeMillis();
-        final Date date_today = new Date(now);
+        final View view = inflater.inflate(R.layout.weekly,container,false);
 
-        //연,월,일을 따로 저장
-        final SimpleDateFormat curYearFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
-        final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
-        final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
-        final SimpleDateFormat curHourFormat = new SimpleDateFormat("h:mm a", Locale.KOREA);*/
-
-        //textYear = (TextView)view.findViewById(R.id.edit1_w);
-        //textMon = (TextView) view.findViewById(R.id.edit2_w);
-        //textTest=(TextView)view.findViewById(R.id.edit3_w);
         mItems = new ArrayList<String>();
-        adapter = new ArrayAdapter<String>(inflater.getContext(),
-                android.R.layout.simple_list_item_1, mItems);
-
-        GridView gird = (GridView)view.findViewById(R.id.grid1_w);
-        gird.setAdapter(adapter);
-        gird.setOnItemClickListener(this);
-
-        Date date = new Date();
-        int year = date.getYear() + 1900;
-        int mon = date.getMonth() + 1;
-
-        int day1=date.getDate();
-
-        //textYear.setText(year + "");
-        //textMon.setText(mon + "");
-        //textTest.setText(day1 + "");
-
-        fillDate(year, mon);
-
-        //Button btnmove = (Button) view.findViewById(R.id.bt1_w);
-        //btnmove.setOnClickListener(this);
-
-        return view;
-    }
-       @Override
-     public void onClick(View arg0) {
-         /* // TODO Auto-generated method stub
-          if (arg0.getId() == R.id.bt1_w) {
-              int year = Integer.parseInt(textYear.getText().toString());
-              int mon = Integer.parseInt(textMon.getText().toString());
-              fillDate(year, mon);
-          }*/
-      }
-    private void fillDate(int year, int mon) {
         mItems.clear();
 
         mItems.add("일");    //0
@@ -93,28 +55,121 @@ public class Weekly extends Fragment implements View.OnClickListener,AdapterView
         mItems.add("목");    //4
         mItems.add("금");    //5
         mItems.add("토");    //6
+
         //오늘에 해당하는 요일 찾기
         Date current = new Date();
-        int day = current.getDay();
+        day = current.getDay();
+
         //오늘 날짜
-        Date today =new Date();
-        int last = today.getDate();
+        Date today = new Date();
+        last = today.getDate();
+        //달의 마지막일을 확인하기위함
+        current.setDate(32);
+        last2 = 32 - current.getDate();
+        data = new ArrayList<MyItem>();
+
+
         //오늘이 해당하는 이번주 요일
-        for (int i = last-day; i <= last+6-day; i++) {
-            mItems.add(i + "");
+        for (int i = last - day, j = 0; i <= last + 6 - day; i++, j++) {
+            if (i > last2 || i <= 0) {
+                data.add(new MyItem(mItems.get(j), 0));
+            } else {
+                data.add(new MyItem(mItems.get(j), i));
+            }
         }
-        adapter.notifyDataSetChanged();
+        //어댑터 생성
+        adapter = new MyAdapter(getContext(), R.layout.item, data);
+
+        //어댑터 연결
+        ListView listView = (ListView) view.findViewById(R.id.listView);
+        listView.setAdapter(adapter);
+
+        listView.setDivider(new ColorDrawable(Color.BLACK));
+        listView.setDividerHeight(2);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View vClicked,
+                                    int position, long id) {
+                String name = ((MyItem) adapter.getItem(position)).nClass;
+                int name1 = ((MyItem) adapter.getItem(position)).nDay;
+
+            }
+        });
+
+
+        Button btn1=(Button)view.findViewById(R.id.btn1);   //지난주
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                last=last-7;
+                data.clear();
+                for (int i = last-day, j=0; i <= last+6-day; i++,j++) {
+                    if (i > last2 || i<=0) {
+                        //data.add(new MyItem(" ",0));
+                        data.isEmpty();
+                    } else {
+
+                        data.add(new MyItem(mItems.get(j), i));
+                    }
+                }
+                //어댑터 생성
+                adapter1 = new MyAdapter(getContext(), R.layout.item, data);
+
+                //어댑터 연결
+                ListView listView = (ListView)view.findViewById(R.id.listView);
+                listView.setAdapter(adapter1);
+
+                listView.setDivider(new ColorDrawable(Color.BLACK));
+                listView.setDividerHeight(2);
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View vClicked,
+                                            int position, long id) {
+                        //   String name = (String) ((TextView)vClicked.findViewById(R.id.textItem1)).getText();
+                        String name = ((MyItem) adapter.getItem(position)).nClass;
+                        int name1 = ((MyItem) adapter.getItem(position)).nDay;
+
+                    }
+                });
+            }
+        });
+        Button btn2=(Button)view.findViewById(R.id.btn2);
+        btn2.setOnClickListener(new View.OnClickListener() {    //이번주
+            @Override
+            public void onClick(View v) {
+                last=last+7;
+                data.clear();
+                for (int i = last-day, j=0; i <= last+6-day; i++,j++) {
+                    if (i > last2 || i<=0) {
+                        //data.add(new MyItem(" ",0));
+                        data.isEmpty();
+                    } else {
+
+                        data.add(new MyItem(mItems.get(j), i));
+                    }
+                }
+                //어댑터 생성
+                adapter2 = new MyAdapter(getContext(), R.layout.item, data);
+
+                //어댑터 연결
+                ListView listView = (ListView)view.findViewById(R.id.listView);
+                listView.setAdapter(adapter2);
+
+                listView.setDivider(new ColorDrawable(Color.BLACK));
+                listView.setDividerHeight(2);
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View vClicked,
+                                            int position, long id) {
+                        //   String name = (String) ((TextView)vClicked.findViewById(R.id.textItem1)).getText();
+                        String name = ((MyItem) adapter.getItem(position)).nClass;
+                        int name1 = ((MyItem) adapter.getItem(position)).nDay;
+
+                    }
+                });
+            }
+        });
+        return view;
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-        // TODO Auto-generated method stub
-        if (mItems.get(arg2).equals("")) {
-        } else {
-            Intent intent = new Intent(getActivity(), Schedule_list.class);
-            intent.putExtra("Param1", mItems.get(arg2));
-            Log.v("test3", intent.toString());
-            startActivity(intent);
-        }
-    }
 }
