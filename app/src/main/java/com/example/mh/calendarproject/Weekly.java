@@ -161,21 +161,26 @@ public class Weekly extends Fragment {
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> parent, View vClicked,
                                             int position, long id) {
-//                        String name = ((MyItem) adapter.getItem(position)).nClass;
-//                        int name1 = ((MyItem) adapter.getItem(position)).nDay;
+                        String name = ((MyItem) adapter.getItem(position)).nClass;
+                        int name1 = ((MyItem) adapter.getItem(position)).nDay;
 
                         Log.i("D","d"); //해당 주 클릭안됨 //after버튼누르면 그다음은 클릭됨
                         Intent intent = new Intent(getActivity(), Schedule_list.class);
+//                        intent.putExtra("Param1", textYear.getText().toString() + "/"
+//                                + textMon.getText().toString() + "/" + mItems.get(arg2));
+
+                        Date date = new Date();
+                        int year = date.getYear()+1900;
+                        int mon = date.getMonth() + 1;
+
+                        intent.putExtra("Param1",year+"/"+mon+"/"+ name1);
                         startActivity(intent);
 
                     }
                 });
-
             }
         });
-
         return view;
-
     }
 
 }
