@@ -94,7 +94,7 @@ public class Monthly extends Fragment implements View.OnClickListener,AdapterVie
         //해당날짜 텍스트 컬러,배경 변경
         mCal= Calendar.getInstance();
         //오늘 DAY가져옴
-        Integer today=mCal.get(Calendar.DAY_OF_MONTH);
+        Integer today = mCal.get(Calendar.DAY_OF_MONTH);
         String sToday=String.valueOf(today);
         if(sToday.equals(today)){
 
@@ -111,6 +111,8 @@ public class Monthly extends Fragment implements View.OnClickListener,AdapterVie
             Intent intent = new Intent(getActivity(), Schedule_list.class);
             intent.putExtra("Param1", textYear.getText().toString() + "/"
                     + textMon.getText().toString() + "/" + mItems.get(arg2));
+
+            Log.i("Param1",intent.getStringExtra("Param1"));
             startActivity(intent);
         }
     }
