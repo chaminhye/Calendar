@@ -91,14 +91,14 @@ public class Monthly extends Fragment implements View.OnClickListener,AdapterVie
         for (int i = 1; i <= last; i++) {
             mItems.add(i + "");
         }
-/*        //해당날짜 텍스트 컬러,배경 변경
+        //해당날짜 텍스트 컬러,배경 변경
         mCal= Calendar.getInstance();
         //오늘 DAY가져옴
         Integer today=mCal.get(Calendar.DAY_OF_MONTH);
         String sToday=String.valueOf(today);
         if(sToday.equals(today)){
 
-        }*/
+        }
         adapter.notifyDataSetChanged();
     }
 

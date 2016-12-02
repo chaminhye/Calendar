@@ -43,7 +43,7 @@ public class Weekly extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        final View view = inflater.inflate(R.layout.weekly,container,false);
+        final View view = inflater.inflate(R.layout.weekly, container, false);
 
         mItems = new ArrayList<String>();
         mItems.clear();
@@ -97,14 +97,14 @@ public class Weekly extends Fragment {
         });
 
 
-        Button btn1=(Button)view.findViewById(R.id.btn1);   //지난주
+        Button btn1 = (Button) view.findViewById(R.id.btn1);   //지난주
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                last=last-7;
+                last = last - 7;
                 data.clear();
-                for (int i = last-day, j=0; i <= last+6-day; i++,j++) {
-                    if (i > last2 || i<=0) {
+                for (int i = last - day, j = 0; i <= last + 6 - day; i++, j++) {
+                    if (i > last2 || i <= 0) {
                         //data.add(new MyItem(" ",0));
                         data.isEmpty();
                     } else {
@@ -116,7 +116,7 @@ public class Weekly extends Fragment {
                 adapter1 = new MyAdapter(getContext(), R.layout.item, data);
 
                 //어댑터 연결
-                ListView listView = (ListView)view.findViewById(R.id.listView);
+                ListView listView = (ListView) view.findViewById(R.id.listView);
                 listView.setAdapter(adapter1);
 
                 listView.setDivider(new ColorDrawable(Color.BLACK));
@@ -133,14 +133,14 @@ public class Weekly extends Fragment {
                 });
             }
         });
-        Button btn2=(Button)view.findViewById(R.id.btn2);
+        Button btn2 = (Button) view.findViewById(R.id.btn2);
         btn2.setOnClickListener(new View.OnClickListener() {    //이번주
             @Override
             public void onClick(View v) {
-                last=last+7;
+                last = last + 7;
                 data.clear();
-                for (int i = last-day, j=0; i <= last+6-day; i++,j++) {
-                    if (i > last2 || i<=0) {
+                for (int i = last - day, j = 0; i <= last + 6 - day; i++, j++) {
+                    if (i > last2 || i <= 0) {
                         //data.add(new MyItem(" ",0));
                         data.isEmpty();
                     } else {
@@ -152,7 +152,7 @@ public class Weekly extends Fragment {
                 adapter2 = new MyAdapter(getContext(), R.layout.item, data);
 
                 //어댑터 연결
-                ListView listView = (ListView)view.findViewById(R.id.listView);
+                ListView listView = (ListView) view.findViewById(R.id.listView);
                 listView.setAdapter(adapter2);
 
                 listView.setDivider(new ColorDrawable(Color.BLACK));
@@ -161,15 +161,21 @@ public class Weekly extends Fragment {
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> parent, View vClicked,
                                             int position, long id) {
-                        //   String name = (String) ((TextView)vClicked.findViewById(R.id.textItem1)).getText();
-                        String name = ((MyItem) adapter.getItem(position)).nClass;
-                        int name1 = ((MyItem) adapter.getItem(position)).nDay;
+//                        String name = ((MyItem) adapter.getItem(position)).nClass;
+//                        int name1 = ((MyItem) adapter.getItem(position)).nDay;
+
+                        Log.i("D","d"); //해당 주 클릭안됨 //after버튼누르면 그다음은 클릭됨
+                        Intent intent = new Intent(getActivity(), Schedule_list.class);
+                        startActivity(intent);
 
                     }
                 });
+
             }
         });
+
         return view;
+
     }
 
 }

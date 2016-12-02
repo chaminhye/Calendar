@@ -65,13 +65,14 @@ public class ScheduleEdit_Activity extends Activity implements View.OnClickListe
 
         if (mId == -1) {
             btn2.setVisibility(View.INVISIBLE);
+
         }
     }
 
     @Override
     public void onClick(View v) {
         // TODO Auto-generated method stub
-        db= mDBHelper.getWritableDatabase();
+        SQLiteDatabase db = mDBHelper.getWritableDatabase();
 
         switch (v.getId()) {
             case R.id.btnsave:

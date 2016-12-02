@@ -18,6 +18,7 @@ public class Schedule_list extends Activity implements OnItemClickListener,
 		OnClickListener {
 	MyDBHelper mDBHelper;
 	String today;
+	String today_week;
 	Cursor cursor;
 	SimpleCursorAdapter adapter;
 	ListView list;
@@ -42,8 +43,8 @@ public class Schedule_list extends Activity implements OnItemClickListener,
 
 		adapter = new SimpleCursorAdapter(this,
 				android.R.layout.simple_list_item_2, cursor, new String[] {
-						"title", "time" }, new int[] { android.R.id.text1,
-						android.R.id.text2 });
+				"title", "time" }, new int[] { android.R.id.text1,
+				android.R.id.text2 });
 
 		ListView list = (ListView) findViewById(R.id.list1);
 		list.setAdapter(adapter);
@@ -58,7 +59,7 @@ public class Schedule_list extends Activity implements OnItemClickListener,
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
+							long id) {
 		// TODO Auto-generated method stub
 		Intent intent = new Intent(this, ScheduleEdit_Activity.class);
 		cursor.moveToPosition(position);
@@ -79,17 +80,17 @@ public class Schedule_list extends Activity implements OnItemClickListener,
 		// TODO Auto-generated method stub
 		// super.onActivityResult(requestCode, resultCode, data);
 		switch (requestCode) {
-		case 0:
-		case 1:
-			if (resultCode == RESULT_OK) {
-				// adapter.notifyDataSetChanged();
-				SQLiteDatabase db = mDBHelper.getWritableDatabase();
-				cursor = db.rawQuery("SELECT * FROM today WHERE date = '"
-						+ today + "'", null);
-				adapter.changeCursor(cursor);
-				mDBHelper.close();
-			}
-			break;
+			case 0:
+			case 1:
+				if (resultCode == RESULT_OK) {
+					// adapter.notifyDataSetChanged();
+					SQLiteDatabase db = mDBHelper.getWritableDatabase();
+					cursor = db.rawQuery("SELECT * FROM today WHERE date = '"
+							+ today + "'", null);
+					adapter.changeCursor(cursor);
+					mDBHelper.close();
+				}
+				break;
 		}
 	}
 }
