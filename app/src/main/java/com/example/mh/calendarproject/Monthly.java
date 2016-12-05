@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,9 @@ public class Monthly extends Fragment implements View.OnClickListener,AdapterVie
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.monthly,container,false);
+
+        ActionBar actionBar=((MainActivity)getActivity()).getSupportActionBar();
+        actionBar.setTitle("Monthly Schedule");
 
         textYear = (TextView)view.findViewById(R.id.edit1);
         textMon = (TextView) view.findViewById(R.id.edit2);

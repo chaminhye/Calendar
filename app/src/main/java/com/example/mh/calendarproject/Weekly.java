@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,6 +46,9 @@ public class Weekly extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.weekly, container, false);
+
+        ActionBar actionBar=((MainActivity)getActivity()).getSupportActionBar();
+        actionBar.setTitle("Weekly Schedule");
 
         mItems = new ArrayList<String>();
         mItems.clear();
@@ -92,7 +97,15 @@ public class Weekly extends Fragment {
                                     int position, long id) {
                 String name = ((MyItem) adapter.getItem(position)).nClass;
                 int name1 = ((MyItem) adapter.getItem(position)).nDay;
+                Log.i("D","d");
+                Intent intent = new Intent(getActivity(), Schedule_list.class);
 
+                Date date = new Date();
+                int year = date.getYear()+1900;
+                int mon = date.getMonth() + 1;
+
+                intent.putExtra("Param1",year+"/"+mon+"/"+ name1);
+                startActivity(intent);
             }
         });
 
@@ -125,9 +138,18 @@ public class Weekly extends Fragment {
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> parent, View vClicked,
                                             int position, long id) {
-                        //   String name = (String) ((TextView)vClicked.findViewById(R.id.textItem1)).getText();
                         String name = ((MyItem) adapter.getItem(position)).nClass;
                         int name1 = ((MyItem) adapter.getItem(position)).nDay;
+
+                        Log.i("D","d");
+                        Intent intent = new Intent(getActivity(), Schedule_list.class);
+
+                        Date date = new Date();
+                        int year = date.getYear()+1900;
+                        int mon = date.getMonth() + 1;
+
+                        intent.putExtra("Param1",year+"/"+mon+"/"+ name1);
+                        startActivity(intent);
 
                     }
                 });
