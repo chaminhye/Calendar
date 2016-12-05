@@ -35,11 +35,11 @@ public class Schedule_list extends Activity implements OnItemClickListener,
 		TextView text = (TextView) findViewById(R.id.texttoday);
 		text.setText(today);
 
-		mDBHelper = new MyDBHelper(this, "Today.db", null, 1);
+		mDBHelper = new MyDBHelper(this, "Today_edit.db", null, 5);
 		SQLiteDatabase db = mDBHelper.getWritableDatabase();
 
 		cursor = db.rawQuery(
-				"SELECT * FROM today WHERE date = '" + today + "'", null);
+				"SELECT * FROM today_edit WHERE date = '" + today + "'", null);
 
 		adapter = new SimpleCursorAdapter(this,
 				android.R.layout.simple_list_item_2, cursor, new String[] {
@@ -85,7 +85,7 @@ public class Schedule_list extends Activity implements OnItemClickListener,
 				if (resultCode == RESULT_OK) {
 					// adapter.notifyDataSetChanged();
 					SQLiteDatabase db = mDBHelper.getWritableDatabase();
-					cursor = db.rawQuery("SELECT * FROM today WHERE date = '"
+					cursor = db.rawQuery("SELECT * FROM today_edit WHERE date = '"
 							+ today + "'", null);
 					adapter.changeCursor(cursor);
 					mDBHelper.close();

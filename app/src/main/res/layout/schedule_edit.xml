@@ -40,26 +40,31 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="시작시간" />
+            android:text="시간" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/edittime"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="00:00" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text=" - " />
+            <EditText
+                android:id="@+id/edittime1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="00:00" />
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/edittime"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="00:00" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="끝나는시간" />
-
-        <EditText
-            android:id="@+id/edittime2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="00:00" />
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -70,8 +75,7 @@
             android:id="@+id/editplace"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text= ""/>
+            android:gravity="center" />
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

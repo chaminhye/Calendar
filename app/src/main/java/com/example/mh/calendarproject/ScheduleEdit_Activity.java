@@ -20,7 +20,7 @@ public class ScheduleEdit_Activity extends Activity implements View.OnClickListe
     MyDBHelper mDBHelper;
     int mId;
     String today;
-    EditText editDate, editTitle, editTime, editMemo;
+    EditText editDate, editTitle, editTime,editTime1,editPlace, editMemo;
     private AlertDialog mDialog = null;
     SQLiteDatabase db;
     /** Called when the activity is first created. */
@@ -32,26 +32,30 @@ public class ScheduleEdit_Activity extends Activity implements View.OnClickListe
         editDate = (EditText) findViewById(R.id.editdate);
         editTitle = (EditText) findViewById(R.id.edittitle);
         editTime = (EditText) findViewById(R.id.edittime);
+        editTime1 = (EditText) findViewById(R.id.edittime1);
+        editPlace = (EditText) findViewById(R.id.editplace);
         editMemo = (EditText) findViewById(R.id.editmemo);
 
         Intent intent = getIntent();
         mId = intent.getIntExtra("ParamID", -1);
         today = intent.getStringExtra("ParamDate");
 
-        mDBHelper = new MyDBHelper(this, "Today.db", null, 1);
+        mDBHelper = new MyDBHelper(this, "Today_edit.db", null, 5);
 
         if (mId == -1) {
             editDate.setText(today);
         } else {
             SQLiteDatabase db = mDBHelper.getWritableDatabase();
-            Cursor cursor = db.rawQuery("SELECT * FROM today WHERE _id='" + mId
+            Cursor cursor = db.rawQuery("SELECT * FROM today_edit WHERE _id='" + mId
                     + "'", null);
 
             if (cursor.moveToNext()) {
                 editTitle.setText(cursor.getString(1));
                 editDate.setText(cursor.getString(2));
                 editTime.setText(cursor.getString(3));
-                editMemo.setText(cursor.getString(4));
+                editTime1.setText(cursor.getString(4));
+                editPlace.setText(cursor.getString(5));
+                editMemo.setText(cursor.getString(6));
             }
             mDBHelper.close();
         }
@@ -77,17 +81,21 @@ public class ScheduleEdit_Activity extends Activity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btnsave:
                 if (mId != -1) {
-                    db.execSQL("UPDATE today SET title='"
+                    db.execSQL("UPDATE today_edit SET title='"
                             + editTitle.getText().toString() + "',date='"
                             + editDate.getText().toString() + "', time='"
-                            + editTime.getText().toString() + "', memo='"
+                            + editTime.getText().toString() + "', time='"
+                            + editTime1.getText().toString() + "', place='"
+                            + editPlace.getText().toString() + "', memo='"
                             + editMemo.getText().toString() + "' WHERE _id='" + mId
                             + "';");
                 } else {
-                    db.execSQL("INSERT INTO today VALUES(null, '"
+                    db.execSQL("INSERT INTO today_edit VALUES(null, '"
                             + editTitle.getText().toString() + "', '"
                             + editDate.getText().toString() + "', '"
                             + editTime.getText().toString() + "', '"
+                            + editTime1.getText().toString() + "', '"
+                            + editPlace.getText().toString() + "', '"
                             + editMemo.getText().toString() + "');");
                 }
                 mDBHelper.close();
@@ -95,7 +103,7 @@ public class ScheduleEdit_Activity extends Activity implements View.OnClickListe
                 break;
             case R.id.btndel:
                 if (mId != -1) {
-                    db.execSQL("DELETE FROM today WHERE _id='" + mId + "';");
+                    db.execSQL("DELETE FROM today_edit WHERE _id='" + mId + "';");
                     mDBHelper.close();
                 }
                 setResult(RESULT_OK);
