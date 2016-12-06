@@ -7,9 +7,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class MyDBHelper extends SQLiteOpenHelper {
 
-	public MyDBHelper(Context context, String name, CursorFactory factory,
-					  int version) {
-		super(context, name, factory, version);
+	private static final String DB_NAME="today1";
+	private static final int DATABASE_VERSION=1;
+	public MyDBHelper(Context context) {
+		super(context,DB_NAME,null,DATABASE_VERSION);
 		// TODO Auto-generated constructor stub
 	}
 
