@@ -1,6 +1,7 @@
 package com.example.mh.calendarproject;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -35,11 +36,15 @@ public class Weekly extends Fragment {
     static MyAdapter adapter;
     static MyAdapter adapter1;
     static MyAdapter adapter2;
+    static int d=0;
     ArrayList<MyItem> data;
     ArrayList<String> mItems;
     private int last;
     private int last2;
-    private int day;
+    private int day,day10;
+    private int YEAR1,MON1,DATE1,DATE2,DATE3;
+    Calendar todayCalendar,todayCalendar1;
+    static int cnt=0;
 
     public Weekly(){}
     @Nullable
@@ -66,19 +71,30 @@ public class Weekly extends Fragment {
         Date current = new Date();
         day = current.getDay();
 
+        todayCalendar = Calendar.getInstance();
+
+        YEAR1=todayCalendar.get(Calendar.YEAR);
+        MON1=todayCalendar.get((Calendar.MONTH))+1;
+        DATE1=todayCalendar.get(Calendar.DATE);
+        DATE2=todayCalendar.getMaximum(Calendar.DAY_OF_MONTH);
+        Log.i("ZZZZZZZZ", String.valueOf(DATE2));
         //오늘 날짜
         Date today = new Date();
         last = today.getDate();
         //달의 마지막일을 확인하기위함
         current.setDate(32);
         last2 = 32 - current.getDate();
+
+
+
         data = new ArrayList<MyItem>();
 
 
         //오늘이 해당하는 이번주 요일
         for (int i = last - day, j = 0; i <= last + 6 - day; i++, j++) {
             if (i > last2 || i <= 0) {
-                data.add(new MyItem(mItems.get(j), 0));
+//                todayCalendar=getLastDay(todayCalendar);
+                data.add(new MyItem(mItems.get(j), i));
             } else {
                 data.add(new MyItem(mItems.get(j), i));
             }
@@ -98,7 +114,7 @@ public class Weekly extends Fragment {
                                     int position, long id) {
                 String name = ((MyItem) adapter.getItem(position)).nClass;
                 int name1 = ((MyItem) adapter.getItem(position)).nDay;
-                Log.i("D","d");
+
                 Intent intent = new Intent(getActivity(), Schedule_list.class);
 
                 Date date = new Date();
@@ -115,17 +131,26 @@ public class Weekly extends Fragment {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                last = last - 7;
+                last = last-7;
                 data.clear();
-                for (int i = last - day, j = 0; i <= last + 6 - day; i++, j++) {
-                    if (i > last2 || i <= 0) {
-                        //data.add(new MyItem(" ",0));
-                        data.isEmpty();
-                    } else {
 
+                for(int i = last - day, j = 0; i <= last + 6 - day; i++, j++) {
+
+                    if(i>0){
                         data.add(new MyItem(mItems.get(j), i));
+                    }else{
+
+                        todayCalendar1 = Calendar.getInstance();
+                        todayCalendar1 = getLastDay(todayCalendar1);
+
+                        DATE3 = todayCalendar1.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+                        Log.i("day_of", String.valueOf(DATE3));
+                        data.add(new MyItem(mItems.get(j), i + DATE3));
+
                     }
                 }
+
                 //어댑터 생성
                 adapter1 = new MyAdapter(getContext(), R.layout.item, data);
 
@@ -142,7 +167,6 @@ public class Weekly extends Fragment {
                         String name = ((MyItem) adapter.getItem(position)).nClass;
                         int name1 = ((MyItem) adapter.getItem(position)).nDay;
 
-                        Log.i("D","d");
                         Intent intent = new Intent(getActivity(), Schedule_list.class);
 
                         Date date = new Date();
@@ -162,15 +186,23 @@ public class Weekly extends Fragment {
             public void onClick(View v) {
                 last = last + 7;
                 data.clear();
-                for (int i = last - day, j = 0; i <= last + 6 - day; i++, j++) {
-                    if (i > last2 || i <= 0) {
-                        //data.add(new MyItem(" ",0));
-                        data.isEmpty();
-                    } else {
+                for(int i = last - day, j = 0; i <= last + 6 - day; i++, j++) {
 
+                    if(i<=last2){
                         data.add(new MyItem(mItems.get(j), i));
+                    }else{
+
+                        todayCalendar1 = Calendar.getInstance();
+                        todayCalendar1 = getLastDay(todayCalendar1);
+
+                        DATE3 = todayCalendar1.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+                        Log.i("day_of", String.valueOf(DATE3));
+                        data.add(new MyItem(mItems.get(j), i + DATE3));
+
                     }
                 }
+
                 //어댑터 생성
                 adapter2 = new MyAdapter(getContext(), R.layout.item, data);
 
@@ -187,10 +219,7 @@ public class Weekly extends Fragment {
                         String name = ((MyItem) adapter.getItem(position)).nClass;
                         int name1 = ((MyItem) adapter.getItem(position)).nDay;
 
-                        Log.i("D","d"); //해당 주 클릭안됨 //after버튼누르면 그다음은 클릭됨
                         Intent intent = new Intent(getActivity(), Schedule_list.class);
-//                        intent.putExtra("Param1", textYear.getText().toString() + "/"
-//                                + textMon.getText().toString() + "/" + mItems.get(arg2));
 
                         Date date = new Date();
                         int year = date.getYear()+1900;
@@ -204,6 +233,43 @@ public class Weekly extends Fragment {
             }
         });
         return view;
+    }
+
+    private Calendar getLastDay(Calendar calendar)
+    {
+
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
+        calendar.add(Calendar.MONTH, -1);
+//        calendar.getMaximum(calendar.DAY_OF_MONTH);
+
+        return calendar;
+    }
+    private Calendar getLastDay(Calendar calendar, int a)
+    {
+
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
+        calendar.add(Calendar.MONTH, -a);
+//        calendar.getMaximum(calendar.DAY_OF_MONTH);
+
+        return calendar;
+    }
+/*    private int getLastDay(int lastday)
+    {
+
+        todayCalendar = Calendar.getInstance();
+
+        YEAR1=todayCalendar.get(Calendar.YEAR);
+        MON1=todayCalendar.get((Calendar.MONTH))+1;
+        DATE1=todayCalendar.get(Calendar.DATE)-1;
+
+        return DATE1;
+    }*/
+    private Calendar getNextDay(Calendar calendar)
+    {
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.getActualMaximum(Calendar.DATE));
+        calendar.add(Calendar.DATE, +1);
+
+        return calendar;
     }
 
 }
