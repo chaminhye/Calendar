@@ -7,17 +7,21 @@
     >
     <TextView
         android:id="@+id/textItem1"
-        android:layout_width="50dp"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:textColor="@color/colorPrimaryDark"
+        android:layout_weight="1"
+        android:textSize="16dp"
+        android:gravity="center"
         />
         <TextView
             android:id="@+id/textItem2"
-            android:layout_width="50dp"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:textSize="16dp"
             android:padding="4dp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:layout_weight="1"/>
 
 
 </LinearLayout>

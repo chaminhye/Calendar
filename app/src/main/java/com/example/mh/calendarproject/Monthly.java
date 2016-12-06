@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import java.util.Date;
 /**
  * Created by Sea on 2016-10-12.
  */
-public class Monthly extends Fragment implements View.OnClickListener,AdapterView.OnItemClickListener{
+public class Monthly extends Fragment implements AdapterView.OnItemClickListener{
     ArrayList<String> mItems;
     ArrayAdapter<String> adapter;
     TextView textYear;
@@ -56,20 +57,33 @@ public class Monthly extends Fragment implements View.OnClickListener,AdapterVie
 
         fillDate(year, mon);
 
-        Button btnmove = (Button) view.findViewById(R.id.bt1);
-        btnmove.setOnClickListener(this);
-
+        ImageView btn_1 = (ImageView) view.findViewById(R.id.btn_pre);
+        btn_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Date date = new Date();
+                int year = date.getYear() + 1900;
+                int mon = date.getMonth() + 1;
+                textYear.setText(year + "");
+                textMon.setText(mon-1 + "");
+                fillDate(year, mon-1);
+            }
+        });
+        ImageView btn_2 = (ImageView) view.findViewById(R.id.btn_next);
+        btn_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Date date = new Date();
+                int year = date.getYear() + 1900;
+                int mon = date.getMonth() + 1;
+                textYear.setText(year + "");
+                textMon.setText(mon + "");
+                fillDate(year, mon);
+            }
+        });
         return view;
     }
-    @Override
-    public void onClick(View arg0) {
-        // TODO Auto-generated method stub
-        if (arg0.getId() == R.id.bt1) {
-            int year = Integer.parseInt(textYear.getText().toString());
-            int mon = Integer.parseInt(textMon.getText().toString());
-            fillDate(year, mon);
-        }
-    }
+
     private void fillDate(int year, int mon) {
         mItems.clear();
 
@@ -95,14 +109,14 @@ public class Monthly extends Fragment implements View.OnClickListener,AdapterVie
         for (int i = 1; i <= last; i++) {
             mItems.add(i + "");
         }
-        //해당날짜 텍스트 컬러,배경 변경
+/*        //해당날짜 텍스트 컬러,배경 변경
         mCal= Calendar.getInstance();
         //오늘 DAY가져옴
         Integer today = mCal.get(Calendar.DAY_OF_MONTH);
         String sToday=String.valueOf(today);
         if(sToday.equals(today)){
 
-        }
+        }*/
         adapter.notifyDataSetChanged();
     }
 

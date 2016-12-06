@@ -4,7 +4,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,9 +32,6 @@ public class Daily extends Fragment {
 
         View view = inflater.inflate(R.layout.activity_daily,container,false);
 
-        ActionBar actionBar=((MainActivity)getActivity()).getSupportActionBar();
-        actionBar.setTitle("Daily Schedule");
-
         ImageView pre_button = (ImageView) view.findViewById(R.id.calendar_prev_button);
         ImageView next_button = (ImageView) view.findViewById(R.id.calendar_next_button);
         today_text = (TextView) view.findViewById(R.id.calendar_date_display);
@@ -44,20 +40,26 @@ public class Daily extends Fragment {
         todayCalendar = Calendar.getInstance();
 
         year=todayCalendar.get(Calendar.YEAR);
-        mon=todayCalendar.get((Calendar.MONTH));
+        mon=todayCalendar.get((Calendar.MONTH))+1;
         date=todayCalendar.get(Calendar.DATE);
 
-        String today = (year) +"/"+ (mon+1) +"/"+(date);
+        String today = (year) +"/"+ (mon) +"/"+(date);
+        Log.i("test_month", String.valueOf(todayCalendar.MONTH));
+        Log.i("test_month", String.valueOf(mon));
 
         setCalendar(todayCalendar);
-        initListView(today);
+
+        Log.i("test_next",String.valueOf(year)+"/"+String.valueOf(mon)+"/"+String.valueOf(date));
         Log.i("test_daily",String.valueOf(today));
+        initListView(today);
 
         pre_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 todayCalendar = getLastDay(todayCalendar);
                 setCalendar(todayCalendar);
+                String last_day = todayCalendar.get(Calendar.YEAR) +"/"+ (todayCalendar.get(Calendar.MONTH)+1) +"/"+todayCalendar.get(Calendar.DATE);
+                initListView(last_day);
             }
         });
 
@@ -66,6 +68,9 @@ public class Daily extends Fragment {
             public void onClick(View v) {
                 todayCalendar = getNextDay(todayCalendar);
                 setCalendar(todayCalendar);
+                String next_day = todayCalendar.get(Calendar.YEAR) +"/"+ (todayCalendar.get(Calendar.MONTH)+1) +"/"+todayCalendar.get(Calendar.DATE);
+                initListView(next_day);
+                Log.i("test_next11",String.valueOf(next_day));
             }
         });
 
@@ -73,23 +78,19 @@ public class Daily extends Fragment {
     }
 
     public void initListView(String today) {
-        MyDBHelper db = new MyDBHelper(getContext(), "Today.db", null, 1);
-        Cursor cursor = db.getReadableDatabase().rawQuery("SELECT * FROM today WHERE date = '" + today + "'",null);
+        MyDBHelper db = new MyDBHelper(getContext(), "Today_edit.db", null, 5);
+        Cursor cursor = db.getReadableDatabase().rawQuery("SELECT * FROM today_edit WHERE date = '" + today + "'",null);
         cursor.moveToFirst();
-        if(cursor.moveToFirst() == false) {
-            list.getEmptyView();
-        } else {
-            mListMember = new ArrayList<String>();
+        mListMember = new ArrayList<String>();
 
-            while (!cursor.isAfterLast()) {
-                mListMember.add(cursor.getString(cursor.getColumnIndex("title")));
-                cursor.moveToNext();
-            }
-            cursor.close();
-            adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, mListMember);
-            list.setAdapter(adapter);
-            //list.setOnItemClickListener(this);
+        while(!cursor.isAfterLast()) {
+            mListMember.add(cursor.getString(cursor.getColumnIndex("title")));
+            cursor.moveToNext();
         }
+        cursor.close();
+        adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, mListMember);
+        list.setAdapter(adapter);
+        //list.setOnItemClickListener(this);
     }
 
     private void setCalendar (Calendar calendar) {
@@ -102,6 +103,7 @@ public class Daily extends Fragment {
         calendar.add(Calendar.DATE, -1);
 
         return calendar;
+
     }
 
     private Calendar getNextDay(Calendar calendar)

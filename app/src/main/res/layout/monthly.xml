@@ -10,29 +10,41 @@
         android:layout_weight="0"
         android:gravity="center"
         android:orientation="horizontal" >
-
-        <EditText
+        <ImageView
+            android:id="@+id/btn_pre"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:gravity="left"
+            android:src="@drawable/previous_icon"/>
+        <TextView
             android:id="@+id/edit1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="input year" />
+            android:hint="2016"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="/" />
+            android:hint="/"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
 
-        <EditText
+        <TextView
             android:id="@+id/edit2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="input month" />
+            android:hint="12"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
 
-        <Button
-            android:id="@+id/bt1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="searh" />
+        <ImageView
+            android:id="@+id/btn_next"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:gravity="right"
+            android:src="@drawable/next_icon"/>
     </LinearLayout>
 
     <LinearLayout
