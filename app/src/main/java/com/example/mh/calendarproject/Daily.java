@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,9 @@ public class Daily extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.activity_daily,container,false);
+
+        ActionBar actionBar=((MainActivity)getActivity()).getSupportActionBar();
+        actionBar.setTitle("Daily Schedule");
 
         ImageView pre_button = (ImageView) view.findViewById(R.id.calendar_prev_button);
         ImageView next_button = (ImageView) view.findViewById(R.id.calendar_next_button);
