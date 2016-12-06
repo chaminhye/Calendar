@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -31,6 +32,7 @@ public class Schedule_list extends Activity implements OnItemClickListener,
 
 		Intent intent = getIntent();
 		today = intent.getStringExtra("Param1");
+		Log.i("test_day",String.valueOf(today));
 
 		TextView text = (TextView) findViewById(R.id.texttoday);
 		text.setText(today);
