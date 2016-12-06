@@ -24,13 +24,25 @@ import java.util.Date;
  * Created by Sea on 2016-10-12.
  */
 public class Monthly extends Fragment implements AdapterView.OnItemClickListener{
-    ArrayList<String> mItems;
-    ArrayAdapter<String> adapter;
-    TextView textYear;
-    TextView textMon;
-    private Calendar mCal;
-    public Monthly(){}
-    @Nullable
+    public static int SUNDAY        = 1;
+    public static int MONDAY        = 2;
+    public static int TUESDAY       = 3;
+    public static int WEDNSESDAY    = 4;
+    public static int THURSDAY      = 5;
+    public static int FRIDAY        = 6;
+    public static int SATURDAY      = 7;
+
+    private TextView Calendar_title;
+    private GridView Calendar_grid;
+
+    //private CalendarAdapter mCalendarAdapter;
+
+    Calendar mLastMonthCalendar;
+    Calendar mThisMonthCalendar;
+    Calendar mNextMonthCalendar;
+
+    Calendar todayCalendar;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -39,100 +51,148 @@ public class Monthly extends Fragment implements AdapterView.OnItemClickListener
         ActionBar actionBar=((MainActivity)getActivity()).getSupportActionBar();
         actionBar.setTitle("Monthly Schedule");
 
-        textYear = (TextView)view.findViewById(R.id.edit1);
-        textMon = (TextView) view.findViewById(R.id.edit2);
-        mItems = new ArrayList<String>();
-        adapter = new ArrayAdapter<String>(inflater.getContext(),
-                android.R.layout.simple_list_item_1, mItems);
+        ImageView pre_button = (ImageView) view.findViewById(R.id.calendar_prev_button);
+        ImageView next_button = (ImageView) view.findViewById(R.id.calendar_next_button);
 
-        GridView gird = (GridView)view.findViewById(R.id.grid1);
-        gird.setAdapter(adapter);
-        gird.setOnItemClickListener(this);
+        //Calendar_title = (TextView)findViewById(R.id.calendar_title);
+        //Calendar_grid = (GridView)findViewById(R.id.calendar);
 
-        Date date = new Date();
-        int year = date.getYear() + 1900;
-        int mon = date.getMonth() + 1;
-        textYear.setText(year + "");
-        textMon.setText(mon + "");
+        mThisMonthCalendar = Calendar.getInstance();
+        mThisMonthCalendar.set(Calendar.DAY_OF_MONTH, 1);
+        getCalendar(mThisMonthCalendar);
 
-        fillDate(year, mon);
-
-        ImageView btn_1 = (ImageView) view.findViewById(R.id.btn_pre);
-        btn_1.setOnClickListener(new View.OnClickListener() {
+        pre_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Date date = new Date();
-                int year = date.getYear() + 1900;
-                int mon = date.getMonth() + 1;
-                textYear.setText(year + "");
-                textMon.setText(mon-1 + "");
-                fillDate(year, mon-1);
+            public void onClick(View v) {
+                mThisMonthCalendar = getLastMonth(mThisMonthCalendar);
+                getCalendar(mThisMonthCalendar);
             }
         });
-        ImageView btn_2 = (ImageView) view.findViewById(R.id.btn_next);
-        btn_2.setOnClickListener(new View.OnClickListener() {
+
+        next_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Date date = new Date();
-                int year = date.getYear() + 1900;
-                int mon = date.getMonth() + 1;
-                textYear.setText(year + "");
-                textMon.setText(mon + "");
-                fillDate(year, mon);
+            public void onClick(View v) {
+                mThisMonthCalendar = getNextMonth(mThisMonthCalendar);
+                getCalendar(mThisMonthCalendar);
             }
         });
+        Calendar_grid.setOnItemClickListener(this);
+
         return view;
     }
 
-    private void fillDate(int year, int mon) {
-        mItems.clear();
+    /**
+     * 달력을 셋팅한다.
+     *
+     * @param calendar 달력에 보여지는 이번달의 Calendar 객체
+     */
+    private void getCalendar(Calendar calendar)
+    {
+        int lastMonthStartDay;
+        int dayOfMonth;
+        int thisMonthLastDay;
 
-        mItems.add("일");
-        mItems.add("월");
-        mItems.add("화");
-        mItems.add("수");
-        mItems.add("목");
-        mItems.add("금");
-        mItems.add("토");
+        //mDayList.clear();
 
-        Date current = new Date(year - 1900, mon - 1,1);
-        int day = current.getDay(); // ���ϵ� int�� ����.
+        // 이번달 시작일의 요일을 구한다. 시작일이 일요일인 경우 인덱스를 1(일요일)에서 8(다음주 일요일)로 바꾼다.)
+        dayOfMonth = calendar.get(Calendar.DAY_OF_WEEK);
+        thisMonthLastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
+        calendar.add(Calendar.MONTH, -1);
+        Log.e("지난달 마지막일", calendar.get(Calendar.DAY_OF_MONTH)+"");
 
-        for (int i = 0; i < day; i++) {
-            mItems.add("");
+        // 지난달의 마지막 일자를 구한다.
+        lastMonthStartDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+        calendar.add(Calendar.MONTH, 1);
+        Log.e("이번달 시작일", calendar.get(Calendar.DAY_OF_MONTH)+"");
+
+        if(dayOfMonth == SUNDAY)
+        {
+            dayOfMonth += 7;
         }
 
-        current.setDate(32);// 32�ϱ��� �Է��ϸ� 1�Ϸ� �ٲ��ش�.
-        int last = 32 - current.getDate();
+        lastMonthStartDay -= (dayOfMonth-1)-1;
 
-        for (int i = 1; i <= last; i++) {
-            mItems.add(i + "");
+
+        // 캘린더 타이틀(년월 표시)을 세팅한다.
+        Calendar_title.setText(mThisMonthCalendar.get(Calendar.YEAR) + "년 "
+                + (mThisMonthCalendar.get(Calendar.MONTH) + 1) + "월");
+
+        //DayInfo day;
+        String day;
+
+        Log.e("DayOfMOnth", dayOfMonth+"");
+
+        /*for(int i=0; i<dayOfMonth-1; i++)
+        {
+            int date = lastMonthStartDay+i;
+            day = todayCalendar.get(Calendar.YEAR) +"/"+ (todayCalendar.get(Calendar.MONTH)+1) +"/"+todayCalendar.get(Calendar.DATE);
+            day = (year) +"/"+ (mon) +"/"+(date);
+            day.setDay(Integer.toString(date));
+            day.setInMonth(false);
+
+            mDayList.add(day);
         }
-/*        //해당날짜 텍스트 컬러,배경 변경
-        mCal= Calendar.getInstance();
-        //오늘 DAY가져옴
-        Integer today = mCal.get(Calendar.DAY_OF_MONTH);
-        String sToday=String.valueOf(today);
-        if(sToday.equals(today)){
+        for(int i=1; i <= thisMonthLastDay; i++)
+        {
+            day = new DayInfo();
+            day.setDay(Integer.toString(i));
+            day.setInMonth(true);
 
-        }*/
-        adapter.notifyDataSetChanged();
+            mDayList.add(day);
+        }
+        for(int i=1; i<42-(thisMonthLastDay+dayOfMonth-1)+1; i++)
+        {
+            day = new DayInfo();
+            day.setDay(Integer.toString(i));
+            day.setInMonth(false);
+            mDayList.add(day);
+        }
+
+        initCalendarAdapter();*/
     }
 
+    /**
+     * 지난달의 Calendar 객체를 반환합니다.
+     *
+     * @param calendar
+     * @return LastMonthCalendar
+     */
+    private Calendar getLastMonth(Calendar calendar)
+    {
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), 1);
+        calendar.add(Calendar.MONTH, -1);
+        Calendar_title.setText(mThisMonthCalendar.get(Calendar.YEAR) + "년 "
+                + (mThisMonthCalendar.get(Calendar.MONTH) + 1) + "월");
+        return calendar;
+    }
+
+    /**
+     * 다음달의 Calendar 객체를 반환합니다.
+     *
+     * @param calendar
+     * @return NextMonthCalendar
+     */
+    private Calendar getNextMonth(Calendar calendar)
+    {
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), 1);
+        calendar.add(Calendar.MONTH, +1);
+        Calendar_title.setText(mThisMonthCalendar.get(Calendar.YEAR) + "년 "
+                + (mThisMonthCalendar.get(Calendar.MONTH) + 1) + "월");
+        return calendar;
+    }
 
     @Override
-    public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-        // TODO Auto-generated method stub
-        if (mItems.get(arg2).equals("")) {
-            ;
-        } else {
-            Intent intent = new Intent(getActivity(), Schedule_list.class);
-            intent.putExtra("Param1", textYear.getText().toString() + "/"
-                    + textMon.getText().toString() + "/" + mItems.get(arg2));
+    public void onItemClick(AdapterView<?> parent, View v, int position, long arg3)
+    {
 
-            Log.i("Param1",intent.getStringExtra("Param1"));
-            startActivity(intent);
-        }
     }
+
+
+    /*private void initCalendarAdapter()
+    {
+        mCalendarAdapter = new CalendarAdapter(this, R.layout.day, mDayList);
+        mGvCalendar.setAdapter(mCalendarAdapter);
+    }*/
 }
