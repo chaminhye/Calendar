@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -110,7 +111,7 @@ public class Weekly extends Fragment {
         });
 
 
-        Button btn1 = (Button) view.findViewById(R.id.btn1);   //지난주
+        ImageView btn1 = (ImageView) view.findViewById(R.id.btn1);   //지난주
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,7 +156,7 @@ public class Weekly extends Fragment {
                 });
             }
         });
-        Button btn2 = (Button) view.findViewById(R.id.btn2);
+        ImageView btn2 = (ImageView) view.findViewById(R.id.btn2);
         btn2.setOnClickListener(new View.OnClickListener() {    //이번주
             @Override
             public void onClick(View v) {

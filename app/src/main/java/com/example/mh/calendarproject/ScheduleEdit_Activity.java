@@ -16,7 +16,7 @@ import android.widget.EditText;
  * Created by mh on 2016-11-24.
  */
 
-public class ScheduleEdit_Activity extends Activity implements View.OnClickListener {
+public class ScheduleEdit_Activity extends Activity {
     MyDBHelper mDBHelper;
     int mId;
     String today;
@@ -45,7 +45,7 @@ public class ScheduleEdit_Activity extends Activity implements View.OnClickListe
         if (mId == -1) {
             editDate.setText(today);
         } else {
-            SQLiteDatabase db = mDBHelper.getWritableDatabase();
+            db = mDBHelper.getWritableDatabase();
             Cursor cursor = db.rawQuery("SELECT * FROM today_edit WHERE _id='" + mId
                     + "'", null);
 
@@ -61,25 +61,10 @@ public class ScheduleEdit_Activity extends Activity implements View.OnClickListe
         }
 
         Button btn1 = (Button) findViewById(R.id.btnsave);
-        btn1.setOnClickListener(this);
-        Button btn2 = (Button) findViewById(R.id.btndel);
-        btn2.setOnClickListener(this);
-        Button btn3 = (Button) findViewById(R.id.btncancel);
-        btn3.setOnClickListener(this);
-
-        if (mId == -1) {
-            btn2.setVisibility(View.INVISIBLE);
-
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        // TODO Auto-generated method stub
-        SQLiteDatabase db = mDBHelper.getWritableDatabase();
-
-        switch (v.getId()) {
-            case R.id.btnsave:
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db = mDBHelper.getWritableDatabase();
                 if (mId != -1) {
                     db.execSQL("UPDATE today_edit SET title='"
                             + editTitle.getText().toString() + "',date='"
@@ -100,18 +85,46 @@ public class ScheduleEdit_Activity extends Activity implements View.OnClickListe
                 }
                 mDBHelper.close();
                 setResult(RESULT_OK);
-                break;
-            case R.id.btndel:
-                if (mId != -1) {
-                    db.execSQL("DELETE FROM today_edit WHERE _id='" + mId + "';");
-                    mDBHelper.close();
-                }
-                setResult(RESULT_OK);
-                break;
-            case R.id.btncancel:
+                finish();
+            }
+        });
+        Button btn2 = (Button) findViewById(R.id.btndel);
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db = mDBHelper.getWritableDatabase();
+                AlertDialog.Builder dlg= new AlertDialog.Builder(ScheduleEdit_Activity.this);
+                dlg.setTitle("Check!");
+                dlg.setMessage("Do you want to delete?");
+                dlg.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (mId != -1) {
+                            db.execSQL("DELETE FROM today_edit WHERE _id='" + mId + "';");
+                            mDBHelper.close();
+                        }
+                        setResult(RESULT_OK);
+                        finish();
+                    }
+                });
+                dlg.setNegativeButton("CANCEL",null);
+                dlg.show();
+
+            }
+        });
+        Button btn3 = (Button) findViewById(R.id.btncancel);
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 setResult(RESULT_CANCELED);
-                break;
+                finish();
+            }
+        });
+
+        if (mId == -1) {
+            btn2.setVisibility(View.INVISIBLE);
+
         }
-        finish();
     }
+
 }
