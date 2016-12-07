@@ -10,26 +10,29 @@
         android:layout_weight="0"
         android:gravity="center"
         android:orientation="horizontal" >
-        <ImageView
-            android:id="@+id/btn_pre"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:gravity="left"
-            android:src="@drawable/previous_icon"/>
-        <TextView
-            android:id="@+id/calendar_title"
+
+        <EditText
+            android:id="@+id/edit1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="2016/12"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20dp"/>
+            android:hint="input year" />
 
-        <ImageView
-            android:id="@+id/btn_next"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:gravity="right"
-            android:src="@drawable/next_icon"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="/" />
+
+        <EditText
+            android:id="@+id/edit2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="input month" />
+
+        <Button
+            android:id="@+id/bt1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="searh" />
     </LinearLayout>
 
     <LinearLayout
@@ -39,7 +42,7 @@
         android:orientation="vertical" >
 
         <GridView
-            android:id="@+id/calendar"
+            android:id="@+id/grid1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
